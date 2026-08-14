@@ -28,164 +28,178 @@
     color: var(--text);
     font-family: 'Inter', sans-serif;
     min-height:100vh;
-    padding: 40px 20px 80px;
+    padding: 30px 16px 60px;
     -webkit-font-smoothing: antialiased;
   }
   .wrap{max-width: 720px; margin: 0 auto;}
-
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
     font-size:12px; letter-spacing:2px; text-transform:uppercase;
     color: var(--cyan); margin: 0 0 10px; text-align:center;
   }
   h1{
-    font-family:'Cinzel', serif;
-    font-weight:700;
-    font-size: clamp(28px, 5vw, 42px);
-    text-align:center;
-    margin: 0 0 8px;
-    color: var(--gold-bright);
-    letter-spacing: 0.5px;
+    font-family:'Cinzel', serif; font-weight:700;
+    font-size: clamp(26px, 5vw, 38px); text-align:center;
+    margin: 0 0 8px; color: var(--gold-bright);
   }
   .subtitle{
-    text-align:center; color: var(--text-dim); font-size:14px;
-    max-width: 480px; margin: 0 auto 40px; line-height:1.6;
+    text-align:center; color: var(--text-dim); font-size:13px;
+    max-width: 480px; margin: 0 auto 30px; line-height:1.5;
   }
-
   .panel{
     background: linear-gradient(180deg, var(--bg-panel) 0%, var(--bg-panel-2) 100%);
-    border: 1px solid var(--hairline);
-    border-radius: 10px;
-    padding: 28px;
-    margin-bottom: 20px;
-    position: relative;
+    border: 1px solid var(--hairline); border-radius: 10px;
+    padding: 22px; margin-bottom: 16px; position: relative;
   }
   .panel::before{
-    content:'';
-    position:absolute; top:0; left:20px; right:20px; height:1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity:0.5;
+    content:''; position:absolute; top:0; left:20px; right:20px; height:1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity:0.5;
   }
-
-  .field-row{ display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px;}
-  .field{ margin-bottom:16px; }
+  .field-row{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:14px;}
+  .field{ margin-bottom:14px; }
   label{
     display:block; font-size:11px; letter-spacing:1.2px; text-transform:uppercase;
-    color: var(--text-faint); margin-bottom:8px; font-weight:600;
+    color: var(--text-faint); margin-bottom:6px; font-weight:600;
   }
+  .input-wrap{ position:relative; }
   input[type=number]{
     width:100%; background: #060d1e; border:1px solid var(--hairline);
     color: var(--gold-bright); font-family:'JetBrains Mono', monospace;
-    font-size:18px; font-weight:600; padding: 12px 14px; border-radius:6px;
+    font-size:17px; font-weight:600; padding: 10px 12px; border-radius:6px;
     outline:none; transition: border-color 0.15s;
   }
   input[type=number]:focus{ border-color: var(--cyan); }
-  input[type=number]::-webkit-inner-spin-button{ opacity:0.4; }
-
+  .quick-btns{ display:flex; gap:4px; margin-top:6px; }
+  .q-btn{
+    background: #14223d; border: 1px solid var(--hairline); color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    padding: 4px 6px; border-radius: 4px; cursor: pointer; flex: 1;
+  }
+  .q-btn:hover{ border-color: var(--cyan); color: var(--gold-bright); }
   .side-toggle{ display:flex; gap:8px; }
   .side-btn{
-    flex:1; padding:12px; border-radius:6px; border:1px solid var(--hairline);
+    flex:1; padding:10px; border-radius:6px; border:1px solid var(--hairline);
     background:#060d1e; color:var(--text-dim); font-family:'JetBrains Mono',monospace;
-    font-size:13px; font-weight:600; letter-spacing:0.5px; cursor:pointer;
-    transition: all 0.15s;
+    font-size:13px; font-weight:600; cursor:pointer; transition: all 0.15s;
   }
-  .side-btn.active[data-side="blue"]{ background: rgba(75,139,212,0.18); border-color:var(--blue-side); color:#a8cbf0; }
-  .side-btn.active[data-side="red"]{ background: rgba(212,72,63,0.18); border-color:var(--red-side); color:#f0a8a3; }
+  .side-btn.active[data-side="blue"]{ background: rgba(75,139,212,0.2); border-color:var(--blue-side); color:#a8cbf0; }
+  .side-btn.active[data-side="red"]{ background: rgba(212,72,63,0.2); border-color:var(--red-side); color:#f0a8a3; }
 
-  .compute-btn{
-    width:100%; padding:16px; margin-top:8px;
-    background: linear-gradient(180deg, var(--gold) 0%, #a87f2e 100%);
-    color:#0a1428; border:none; border-radius:6px;
-    font-family:'Cinzel', serif; font-weight:700; font-size:16px; letter-spacing:1px;
-    cursor:pointer; text-transform:uppercase;
-    transition: transform 0.1s, box-shadow 0.15s;
-  }
-  .compute-btn:hover{ box-shadow: 0 4px 20px rgba(200,155,60,0.3); transform: translateY(-1px); }
-  .compute-btn:active{ transform: translateY(0px); }
+  /* Comparison Visual Bars */
+  .bar-container{ margin: 12px 0 16px; }
+  .bar-row{ margin-bottom: 8px; }
+  .bar-meta{ display:flex; justify-content:space-between; font-size:11px; font-family:'JetBrains Mono', monospace; margin-bottom:4px; }
+  .bar-track{ height: 16px; background: #060d1e; border-radius: 4px; overflow:hidden; border: 1px solid var(--hairline); }
+  .bar-fill{ height: 100%; transition: width 0.3s ease; }
+  .fill-model{ background: linear-gradient(90deg, var(--gold), #f0e6d2); }
+  .fill-market{ background: linear-gradient(90deg, #3d588a, var(--cyan)); }
 
-  /* Result */
-  .result{ display:none; }
-  .result.show{ display:block; }
-
-  .gold-bar{
-    height: 34px; border-radius: 6px; overflow:hidden; display:flex;
-    border:1px solid var(--hairline); margin: 18px 0 8px;
-    background:#060d1e;
-  }
-  .gold-bar-seg{
-    display:flex; align-items:center; justify-content:center;
-    font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:700;
-    transition: width 0.5s ease;
-    white-space:nowrap; overflow:hidden;
-  }
-  .seg-model{ background: linear-gradient(180deg, var(--gold) 0%, #9c7830 100%); color:#0a1428; }
-  .seg-market{ background: linear-gradient(180deg, #2a3a5c 0%, #1c2942 100%); color: var(--text-dim); }
-  .bar-labels{ display:flex; justify-content:space-between; font-size:11px; color:var(--text-faint); margin-bottom:20px; }
-
-  .stat-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom: 20px; }
-  .stat{ text-align:center; padding: 14px 8px; background:#060d1e; border-radius:6px; border:1px solid var(--hairline); }
-  .stat-label{ font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--text-faint); margin-bottom:6px; }
-  .stat-value{ font-family:'JetBrains Mono', monospace; font-size:20px; font-weight:700; color: var(--gold-bright); }
+  .stat-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom: 16px; }
+  .stat{ text-align:center; padding: 12px 6px; background:#060d1e; border-radius:6px; border:1px solid var(--hairline); }
+  .stat-label{ font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--text-faint); margin-bottom:4px; }
+  .stat-value{ font-family:'JetBrains Mono', monospace; font-size:19px; font-weight:700; color: var(--gold-bright); }
   .stat-value.positive{ color: #7fd858; }
   .stat-value.negative{ color: var(--text-dim); }
 
   .verdict{
-    text-align:center; padding: 18px; border-radius:8px; font-family:'Cinzel', serif;
-    font-weight:700; font-size:17px; letter-spacing:1px; text-transform:uppercase;
+    text-align:center; padding: 14px; border-radius:6px; font-family:'Cinzel', serif;
+    font-weight:700; font-size:15px; letter-spacing:1px; text-transform:uppercase;
   }
   .verdict.enter{ background: rgba(127,216,88,0.12); border:1px solid rgba(127,216,88,0.4); color:#a3e885; }
   .verdict.skip{ background: rgba(124,138,168,0.1); border:1px solid var(--hairline); color: var(--text-dim); }
-
-  .meta-note{ font-size:12px; color:var(--text-faint); text-align:center; margin-top:14px; line-height:1.6; }
+  .meta-note{ font-size:11px; color:var(--text-faint); text-align:center; margin-top:10px; }
   .meta-note b{ color: var(--text-dim); }
-
-  footer{ text-align:center; margin-top:30px; }
-  .footer-note{ font-size:11px; color:var(--text-faint); line-height:1.7; max-width:520px; margin:0 auto; }
+  footer{ text-align:center; margin-top:20px; }
+  .footer-note{ font-size:11px; color:var(--text-faint); line-height:1.6; max-width:520px; margin:0 auto; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="eyebrow">Metodologia própria · Polymarket Moneyline</div>
+  <div class="eyebrow">Polymarket Live Edge · League of Legends</div>
   <h1>Live Edge</h1>
-  <p class="subtitle">Leia o placar da transmissão, compare com o preço da Polymarket. Sem API, sem instalação — só os números que já estão na tela.</p>
+  <p class="subtitle">Insira os dados da transmissão em tempo real para calcular a probabilidade ajustada e o valor esperado (+EV).</p>
 
   <div class="panel">
     <div class="field-row">
       <div class="field">
-        <label>Minuto do jogo</label>
-        <input type="number" id="minuto" value="14" min="0" step="1">
+        <label>Tempo (Minutos)</label>
+        <div class="input-wrap">
+          <input type="number" id="minuto" value="14" min="1" max="45" step="0.5" oninput="calcular()">
+        </div>
+        <div class="quick-btns">
+          <button class="q-btn" onclick="addVal('minuto', 1)">+1m</button>
+          <button class="q-btn" onclick="addVal('minuto', 5)">+5m</button>
+          <button class="q-btn" onclick="setVal('minuto', 15)">15m</button>
+          <button class="q-btn" onclick="setVal('minuto', 20)">20m</button>
+        </div>
       </div>
       <div class="field">
-        <label>Gold diff (seu time)</label>
-        <input type="number" id="golddiff" value="1800" step="50">
+        <label>Gold Diff (Seu Time)</label>
+        <div class="input-wrap">
+          <input type="number" id="golddiff" value="1800" step="100" oninput="calcular()">
+        </div>
+        <div class="quick-btns">
+          <button class="q-btn" onclick="addVal('golddiff', -1000)">-1k</button>
+          <button class="q-btn" onclick="addVal('golddiff', 500)">+500</button>
+          <button class="q-btn" onclick="addVal('golddiff', 1000)">+1k</button>
+          <button class="q-btn" onclick="addVal('golddiff', 2000)">+2k</button>
+        </div>
       </div>
     </div>
+
     <div class="field-row">
       <div class="field">
-        <label>Diferença de kills</label>
-        <input type="number" id="killdiff" value="2" step="1">
+        <label>Kill Diff</label>
+        <div class="input-wrap">
+          <input type="number" id="killdiff" value="2" step="1" oninput="calcular()">
+        </div>
+        <div class="quick-btns">
+          <button class="q-btn" onclick="addVal('killdiff', -1)">-1</button>
+          <button class="q-btn" onclick="addVal('killdiff', 1)">+1</button>
+          <button class="q-btn" onclick="addVal('killdiff', 2)">+2</button>
+          <button class="q-btn" onclick="setVal('killdiff', 0)">0</button>
+        </div>
       </div>
       <div class="field">
-        <label>Odd (Polymarket)</label>
-        <input type="number" id="odd" value="1.61" min="1.01" step="0.01">
+        <label>Preço Polymarket / Odd</label>
+        <div class="input-wrap">
+          <input type="number" id="odd" value="1.61" min="1.01" max="50" step="0.01" oninput="calcular()">
+        </div>
+        <div class="quick-btns">
+          <button class="q-btn" onclick="setPriceProb(0.50)">50¢ (2.00)</button>
+          <button class="q-btn" onclick="setPriceProb(0.60)">60¢ (1.67)</button>
+          <button class="q-btn" onclick="setPriceProb(0.70)">70¢ (1.43)</button>
+          <button class="q-btn" onclick="setPriceProb(0.80)">80¢ (1.25)</button>
+        </div>
       </div>
     </div>
+
     <div class="field">
-      <label>Lado do mapa</label>
+      <label>Lado do Mapa</label>
       <div class="side-toggle">
         <button class="side-btn active" data-side="blue" onclick="setSide('blue')">Blue Side</button>
         <button class="side-btn" data-side="red" onclick="setSide('red')">Red Side</button>
       </div>
     </div>
-    <button class="compute-btn" onclick="calcular()">Calcular Edge</button>
   </div>
 
-  <div class="panel result" id="resultPanel">
-    <div class="gold-bar" id="goldBar">
-      <div class="gold-bar-seg seg-model" id="segModel"></div>
-      <div class="gold-bar-seg seg-market" id="segMarket"></div>
+  <div class="panel" id="resultPanel">
+    <div class="bar-container">
+      <div class="bar-row">
+        <div class="bar-meta">
+          <span style="color:var(--gold-bright);">Probabilidade Estimada (Modelo)</span>
+          <span id="txtModelProb" style="color:var(--gold-bright);">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill fill-model" id="barModel" style="width:0%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta">
+          <span style="color:var(--cyan);">Preço Implícito (Polymarket)</span>
+          <span id="txtMarketProb" style="color:var(--cyan);">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill fill-market" id="barMarket" style="width:0%"></div></div>
+      </div>
     </div>
-    <div class="bar-labels"><span>Modelo</span><span>Mercado (Polymarket)</span></div>
 
     <div class="stat-grid">
       <div class="stat">
@@ -197,7 +211,7 @@
         <div class="stat-value" id="statEdge">—</div>
       </div>
       <div class="stat">
-        <div class="stat-label">Stake (teto 5%)</div>
+        <div class="stat-label">Kelly (Stake 5% Máx)</div>
         <div class="stat-value" id="statStake">—</div>
       </div>
     </div>
@@ -207,76 +221,120 @@
   </div>
 
   <footer>
-    <p class="footer-note">Modelo de regressão logística treinado com ~24 mil partidas profissionais (Oracle's Elixir, 2024–2026). Edge mínimo de entrada: 8 pontos. Kelly fracionado a 40%, travado em 5% do bankroll por aposta.</p>
+    <p class="footer-note">Treinado dinamicamente com dados consolidados do Oracle's Elixir. Interpolação contínua entre cortes temporais. Critério Kelly fracionado (40%) com teto de 5% de banca.</p>
   </footer>
 </div>
 
 <script>
-const MODELS = {
-  10: {coef:{golddiff:1.4419850975394053, killdiff:-0.34858941864875076, is_blue:0.05761652711191591}, intercept:-0.0005539848928539232, mean:[-4.2484429790129274,-0.007039304966766107,0.5023028209556707], scale:[1451.3351137579868,2.337362257634293,0.4999946969875561], auc:0.759},
-  15: {coef:{golddiff:1.7122472104899753, killdiff:-0.06819069138091396, is_blue:0.025547877501769872}, intercept:-0.0016004272935571347, mean:[-6.022453679472417,-0.0034805820161205904,0.5008636030566315], scale:[2893.0048051634785,3.8592711835137807,0.49999925418918023], auc:0.818},
-  20: {coef:{golddiff:2.1137277451860284, killdiff:0.18673757985797934, is_blue:0.002640560271023589}, intercept:-0.00031844853111082783, mean:[-5.833100981140016,-0.014388299971065575,0.5002761922297919], scale:[4617.472950122968,5.741860731781682,0.49999992371782076], auc:0.875},
-  25: {coef:{golddiff:2.4681681229329993, killdiff:0.34181403926044635, is_blue:-0.011641575028012689}, intercept:-0.0022029198907420697, mean:[11.095077234011837,-0.00011549011115923199,0.49877291756893316], scale:[6011.420597817693,7.415149202422719,0.49999849426644183], auc:0.917}
+// Modelos fallback caso o models.json demore para carregar
+let MODELS = {
+  10: {coef:{golddiff:1.44, killdiff:-0.34, is_blue:0.057}, intercept:-0.0005, mean:[-4.24,-0.007,0.50], scale:[1451.3,2.33,0.50], auc:0.759},
+  15: {coef:{golddiff:1.71, killdiff:-0.06, is_blue:0.025}, intercept:-0.0016, mean:[-6.02,-0.003,0.50], scale:[2893.0,3.85,0.50], auc:0.818},
+  20: {coef:{golddiff:2.11, killdiff:0.18,  is_blue:0.002}, intercept:-0.0003, mean:[-5.83,-0.014,0.50], scale:[4617.4,5.74,0.50], auc:0.875},
+  25: {coef:{golddiff:2.46, killdiff:0.34,  is_blue:-0.011}, intercept:-0.0022, mean:[11.09,-0.0001,0.49], scale:[6011.4,7.41,0.50], auc:0.917}
 };
-const CUTS = [10,15,20,25];
+const CUTS = [10, 15, 20, 25];
+
+// Carrega os modelos atualizados gerados pelo Python
+fetch('./models.json')
+  .then(res => res.json())
+  .then(data => {
+    MODELS = data;
+    calcular();
+  })
+  .catch(err => console.log('Usando modelo fallback local'));
 
 let selectedSide = 'blue';
+
 function setSide(side){
   selectedSide = side;
-  document.querySelectorAll('.side-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
   document.querySelector(`.side-btn[data-side="${side}"]`).classList.add('active');
+  calcular();
 }
 
-function nearestCut(minuto){
-  const valid = CUTS.filter(t=>t<=minuto);
-  return valid.length ? Math.max(...valid) : Math.min(...CUTS);
+function addVal(id, delta){
+  const el = document.getElementById(id);
+  el.value = (parseFloat(el.value) || 0) + delta;
+  calcular();
 }
 
-function sigmoid(z){ return 1/(1+Math.exp(-z)); }
+function setVal(id, val){
+  document.getElementById(id).value = val;
+  calcular();
+}
+
+function setPriceProb(prob){
+  const odd = (1 / prob).toFixed(2);
+  document.getElementById('odd').value = odd;
+  calcular();
+}
+
+function sigmoid(z){ return 1 / (1 + Math.exp(-z)); }
+
+function calcLogitForCut(cutKey, golddiff, killdiff, isBlue){
+  const m = MODELS[cutKey];
+  const xs = [golddiff, killdiff, isBlue];
+  const xScaled = xs.map((v, i) => (v - m.mean[i]) / m.scale[i]);
+  return xScaled[0] * m.coef.golddiff + xScaled[1] * m.coef.killdiff + xScaled[2] * m.coef.is_blue + m.intercept;
+}
+
+function getInterpolatedProb(minuto, golddiff, killdiff, isBlue){
+  if(minuto <= CUTS[0]) return sigmoid(calcLogitForCut(CUTS[0], golddiff, killdiff, isBlue));
+  if(minuto >= CUTS[CUTS.length - 1]) return sigmoid(calcLogitForCut(CUTS[CUTS.length - 1], golddiff, killdiff, isBlue));
+
+  let lower = CUTS[0], upper = CUTS[CUTS.length - 1];
+  for(let i = 0; i < CUTS.length - 1; i++){
+    if(minuto >= CUTS[i] && minuto <= CUTS[i+1]){
+      lower = CUTS[i];
+      upper = CUTS[i+1];
+      break;
+    }
+  }
+
+  const pLower = sigmoid(calcLogitForCut(lower, golddiff, killdiff, isBlue));
+  const pUpper = sigmoid(calcLogitForCut(upper, golddiff, killdiff, isBlue));
+  const weight = (minuto - lower) / (upper - lower);
+  return pLower + weight * (pUpper - pLower);
+}
 
 function calcular(){
-  const minuto = parseFloat(document.getElementById('minuto').value) || 0;
+  const minuto = parseFloat(document.getElementById('minuto').value) || 10;
   const golddiff = parseFloat(document.getElementById('golddiff').value) || 0;
   const killdiff = parseFloat(document.getElementById('killdiff').value) || 0;
-  const odd = parseFloat(document.getElementById('odd').value) || 1.01;
-  const precoC = (1/odd) * 100;
-  const preco = precoC/100;
+  const odd = Math.max(parseFloat(document.getElementById('odd').value) || 1.01, 1.001);
+
+  const precoMercado = 1 / odd;
   const isBlue = selectedSide === 'blue' ? 1 : 0;
 
-  const cut = nearestCut(minuto);
-  const m = MODELS[cut];
-  const xs = [golddiff, killdiff, isBlue];
-  const xScaled = xs.map((v,i)=>(v - m.mean[i]) / m.scale[i]);
-  const z = xScaled[0]*m.coef.golddiff + xScaled[1]*m.coef.killdiff + xScaled[2]*m.coef.is_blue + m.intercept;
-  const p = sigmoid(z);
-
-  const edge = p - preco;
-  const kellyFull = Math.max((p - preco) / (1 - preco), 0);
+  const p = getInterpolatedProb(minuto, golddiff, killdiff, isBlue);
+  const edge = p - precoMercado;
+  const kellyFull = Math.max((p - precoMercado) / (1 - precoMercado), 0);
   const stake = Math.min(kellyFull * 0.4, 0.05);
 
-  document.getElementById('statProb').textContent = (p*100).toFixed(1) + '%';
-  document.getElementById('statEdge').textContent = (edge>=0?'+':'') + (edge*100).toFixed(1) + ' pts';
-  document.getElementById('statEdge').className = 'stat-value ' + (edge>0.08 ? 'positive' : 'negative');
-  document.getElementById('statStake').textContent = (stake*100).toFixed(2) + '%';
+  // Textos
+  document.getElementById('statProb').textContent = (p * 100).toFixed(1) + '%';
+  document.getElementById('statEdge').textContent = (edge >= 0 ? '+' : '') + (edge * 100).toFixed(1) + ' pts';
+  document.getElementById('statEdge').className = 'stat-value ' + (edge >= 0.08 ? 'positive' : 'negative');
+  document.getElementById('statStake').textContent = (stake * 100).toFixed(2) + '%';
 
-  const pctModel = Math.max(4, Math.min(96, p*100));
-  document.getElementById('segModel').style.width = pctModel + '%';
-  document.getElementById('segModel').textContent = (p*100).toFixed(0) + '%';
-  document.getElementById('segMarket').style.width = (100-pctModel) + '%';
-  document.getElementById('segMarket').textContent = precoC.toFixed(0) + '%';
+  // Barras
+  document.getElementById('barModel').style.width = (p * 100).toFixed(1) + '%';
+  document.getElementById('txtModelProb').textContent = (p * 100).toFixed(1) + '%';
+  document.getElementById('barMarket').style.width = (precoMercado * 100).toFixed(1) + '%';
+  document.getElementById('txtMarketProb').textContent = (precoMercado * 100).toFixed(1) + `% (${(precoMercado * 100).toFixed(0)}¢)`;
 
+  // Veredito
   const verdictEl = document.getElementById('verdict');
   if(edge >= 0.08){
     verdictEl.className = 'verdict enter';
-    verdictEl.textContent = 'Entrada indicada';
+    verdictEl.textContent = 'Entrada Indicada (+EV)';
   } else {
     verdictEl.className = 'verdict skip';
-    verdictEl.textContent = 'Sem entrada — edge insuficiente';
+    verdictEl.textContent = 'Sem Entrada — Edge Insuficiente';
   }
 
-  document.getElementById('metaNote').innerHTML = `Modelo usado: corte de <b>${cut}min</b> (AUC histórico ${m.auc.toFixed(3)}) · Lado: <b>${selectedSide === 'blue' ? 'Blue' : 'Red'}</b> · Odd ${odd.toFixed(2)} → implícito <b>${precoC.toFixed(1)}%</b>`;
-
-  document.getElementById('resultPanel').classList.add('show');
+  document.getElementById('metaNote').innerHTML = `Tempo: <b>${minuto} min</b> · Lado: <b>${selectedSide === 'blue' ? 'Blue' : 'Red'}</b> · Preço implícito: <b>${(precoMercado * 100).toFixed(1)}%</b>`;
 }
 
 calcular();
