@@ -17,6 +17,8 @@
     --cyan: #0ac8b9;
     --blue-side: #4b8bd4;
     --red-side: #d4483f;
+    --dragon-color: #e57373;
+    --dragon-active: #ffb74d;
     --text: #cdd7e8;
     --text-dim: #7c8aa8;
     --text-faint: #4a5878;
@@ -44,7 +46,7 @@
   }
   .subtitle{
     text-align:center; color: var(--text-dim); font-size:13px;
-    max-width: 480px; margin: 0 auto 30px; line-height:1.5;
+    max-width: 480px; margin: 0 auto 26px; line-height:1.5;
   }
   .panel{
     background: linear-gradient(180deg, var(--bg-panel) 0%, var(--bg-panel-2) 100%);
@@ -76,6 +78,21 @@
     padding: 4px 6px; border-radius: 4px; cursor: pointer; flex: 1;
   }
   .q-btn:hover{ border-color: var(--cyan); color: var(--gold-bright); }
+  
+  /* Dragões */
+  .dragon-group{ display:flex; gap:6px; margin-top:4px; }
+  .d-btn{
+    flex:1; padding:8px 0; background:#060d1e; border:1px solid var(--hairline);
+    color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:12px;
+    font-weight:700; border-radius:6px; cursor:pointer; transition: all 0.15s;
+  }
+  .d-btn.active{
+    background: rgba(229,115,115,0.18); border-color: var(--dragon-color); color: #ffcdd2;
+  }
+  .d-btn.active.soul{
+    background: rgba(255,183,77,0.22); border-color: var(--dragon-active); color: #ffe082;
+  }
+
   .side-toggle{ display:flex; gap:8px; }
   .side-btn{
     flex:1; padding:10px; border-radius:6px; border:1px solid var(--hairline);
@@ -85,7 +102,7 @@
   .side-btn.active[data-side="blue"]{ background: rgba(75,139,212,0.2); border-color:var(--blue-side); color:#a8cbf0; }
   .side-btn.active[data-side="red"]{ background: rgba(212,72,63,0.2); border-color:var(--red-side); color:#f0a8a3; }
 
-  /* Comparison Visual Bars */
+  /* Visual Bars */
   .bar-container{ margin: 12px 0 16px; }
   .bar-row{ margin-bottom: 8px; }
   .bar-meta{ display:flex; justify-content:space-between; font-size:11px; font-family:'JetBrains Mono', monospace; margin-bottom:4px; }
@@ -107,17 +124,17 @@
   }
   .verdict.enter{ background: rgba(127,216,88,0.12); border:1px solid rgba(127,216,88,0.4); color:#a3e885; }
   .verdict.skip{ background: rgba(124,138,168,0.1); border:1px solid var(--hairline); color: var(--text-dim); }
-  .meta-note{ font-size:11px; color:var(--text-faint); text-align:center; margin-top:10px; }
+  .meta-note{ font-size:11px; color:var(--text-faint); text-align:center; margin-top:10px; line-height: 1.5; }
   .meta-note b{ color: var(--text-dim); }
   footer{ text-align:center; margin-top:20px; }
-  .footer-note{ font-size:11px; color:var(--text-faint); line-height:1.6; max-width:520px; margin:0 auto; }
+  .footer-note{ font-size:11px; color:var(--text-faint); line-height:1.6; max-width:540px; margin:0 auto; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="eyebrow">Polymarket Live Edge · League of Legends</div>
   <h1>Live Edge</h1>
-  <p class="subtitle">Insira os dados da transmissão em tempo real para calcular a probabilidade ajustada e o valor esperado (+EV).</p>
+  <p class="subtitle">Predição ao vivo calibrada com controle de ouro, ritmo temporal e pressão de objetivos neutros.</p>
 
   <div class="panel">
     <div class="field-row">
@@ -174,6 +191,30 @@
       </div>
     </div>
 
+    <!-- Controle de Dragões -->
+    <div class="field-row">
+      <div class="field">
+        <label>Dragões (Seu Time)</label>
+        <div class="dragon-group" id="myDragGroup">
+          <button class="d-btn active" onclick="setDrags('my', 0)">0</button>
+          <button class="d-btn" onclick="setDrags('my', 1)">1</button>
+          <button class="d-btn" onclick="setDrags('my', 2)">2</button>
+          <button class="d-btn" onclick="setDrags('my', 3)">3 ★</button>
+          <button class="d-btn" onclick="setDrags('my', 4)">4 👑</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Dragões (Rival)</label>
+        <div class="dragon-group" id="oppDragGroup">
+          <button class="d-btn active" onclick="setDrags('opp', 0)">0</button>
+          <button class="d-btn" onclick="setDrags('opp', 1)">1</button>
+          <button class="d-btn" onclick="setDrags('opp', 2)">2</button>
+          <button class="d-btn" onclick="setDrags('opp', 3)">3 ★</button>
+          <button class="d-btn" onclick="setDrags('opp', 4)">4 👑</button>
+        </div>
+      </div>
+    </div>
+
     <div class="field">
       <label>Lado do Mapa</label>
       <div class="side-toggle">
@@ -221,35 +262,52 @@
   </div>
 
   <footer>
-    <p class="footer-note">Treinado dinamicamente com dados consolidados do Oracle's Elixir. Interpolação contínua entre cortes temporais. Critério Kelly fracionado (40%) com teto de 5% de banca.</p>
+    <p class="footer-note">Treinado dinamicamente com dados consolidados do Oracle's Elixir. Interpolação contínua e modificadores de ponto de alma/alma elemental. Critério Kelly a 40% (teto de 5%).</p>
   </footer>
 </div>
 
 <script>
-// Modelos fallback caso o models.json demore para carregar
 let MODELS = {
-  10: {coef:{golddiff:1.44, killdiff:-0.34, is_blue:0.057}, intercept:-0.0005, mean:[-4.24,-0.007,0.50], scale:[1451.3,2.33,0.50], auc:0.759},
-  15: {coef:{golddiff:1.71, killdiff:-0.06, is_blue:0.025}, intercept:-0.0016, mean:[-6.02,-0.003,0.50], scale:[2893.0,3.85,0.50], auc:0.818},
-  20: {coef:{golddiff:2.11, killdiff:0.18,  is_blue:0.002}, intercept:-0.0003, mean:[-5.83,-0.014,0.50], scale:[4617.4,5.74,0.50], auc:0.875},
-  25: {coef:{golddiff:2.46, killdiff:0.34,  is_blue:-0.011}, intercept:-0.0022, mean:[11.09,-0.0001,0.49], scale:[6011.4,7.41,0.50], auc:0.917}
+  10: {coef:{golddiff:1.465, killdiff:-0.453, is_blue:0.043}, intercept:-0.00001, mean:[0,-0.013,0.5], scale:[1480.1,2.35,0.5], auc:0.762},
+  15: {coef:{golddiff:1.853, killdiff:-0.189, is_blue:-0.043}, intercept:0.00004, mean:[0,-0.013,0.5], scale:[3078.1,4.12,0.5], auc:0.828},
+  20: {coef:{golddiff:2.353, killdiff:0.259,  is_blue:-0.020}, intercept:0.00001, mean:[0,-0.013,0.5], scale:[5353.5,6.71,0.5], auc:0.912},
+  25: {coef:{golddiff:2.817, killdiff:0.752,  is_blue:-0.061}, intercept:-0.00009, mean:[0,-0.014,0.5], scale:[7766.1,9.29,0.5], auc:0.948}
 };
 const CUTS = [10, 15, 20, 25];
 
-// Carrega os modelos atualizados gerados pelo Python
+let selectedSide = 'blue';
+let myDrags = 0;
+let oppDrags = 0;
+
 fetch('./models.json')
   .then(res => res.json())
   .then(data => {
     MODELS = data;
     calcular();
   })
-  .catch(err => console.log('Usando modelo fallback local'));
-
-let selectedSide = 'blue';
+  .catch(err => console.log('Usando modelos locais'));
 
 function setSide(side){
   selectedSide = side;
   document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
   document.querySelector(`.side-btn[data-side="${side}"]`).classList.add('active');
+  calcular();
+}
+
+function setDrags(type, count){
+  if(type === 'my'){
+    myDrags = count;
+    const btns = document.querySelectorAll('#myDragGroup .d-btn');
+    btns.forEach((b, i) => {
+      b.className = 'd-btn' + (i === count ? (count >= 3 ? ' active soul' : ' active') : '');
+    });
+  } else {
+    oppDrags = count;
+    const btns = document.querySelectorAll('#oppDragGroup .d-btn');
+    btns.forEach((b, i) => {
+      b.className = 'd-btn' + (i === count ? (count >= 3 ? ' active soul' : ' active') : '');
+    });
+  }
   calcular();
 }
 
@@ -279,9 +337,9 @@ function calcLogitForCut(cutKey, golddiff, killdiff, isBlue){
   return xScaled[0] * m.coef.golddiff + xScaled[1] * m.coef.killdiff + xScaled[2] * m.coef.is_blue + m.intercept;
 }
 
-function getInterpolatedProb(minuto, golddiff, killdiff, isBlue){
-  if(minuto <= CUTS[0]) return sigmoid(calcLogitForCut(CUTS[0], golddiff, killdiff, isBlue));
-  if(minuto >= CUTS[CUTS.length - 1]) return sigmoid(calcLogitForCut(CUTS[CUTS.length - 1], golddiff, killdiff, isBlue));
+function getInterpolatedLogit(minuto, golddiff, killdiff, isBlue){
+  if(minuto <= CUTS[0]) return calcLogitForCut(CUTS[0], golddiff, killdiff, isBlue);
+  if(minuto >= CUTS[CUTS.length - 1]) return calcLogitForCut(CUTS[CUTS.length - 1], golddiff, killdiff, isBlue);
 
   let lower = CUTS[0], upper = CUTS[CUTS.length - 1];
   for(let i = 0; i < CUTS.length - 1; i++){
@@ -292,10 +350,10 @@ function getInterpolatedProb(minuto, golddiff, killdiff, isBlue){
     }
   }
 
-  const pLower = sigmoid(calcLogitForCut(lower, golddiff, killdiff, isBlue));
-  const pUpper = sigmoid(calcLogitForCut(upper, golddiff, killdiff, isBlue));
+  const zLower = calcLogitForCut(lower, golddiff, killdiff, isBlue);
+  const zUpper = calcLogitForCut(upper, golddiff, killdiff, isBlue);
   const weight = (minuto - lower) / (upper - lower);
-  return pLower + weight * (pUpper - pLower);
+  return zLower + weight * (zUpper - zLower);
 }
 
 function calcular(){
@@ -307,18 +365,34 @@ function calcular(){
   const precoMercado = 1 / odd;
   const isBlue = selectedSide === 'blue' ? 1 : 0;
 
-  const p = getInterpolatedProb(minuto, golddiff, killdiff, isBlue);
+  // Logit base interpolado
+  let z = getInterpolatedLogit(minuto, golddiff, killdiff, isBlue);
+
+  // Modificadores de Dragões
+  const dragDiff = myDrags - oppDrags;
+  z += dragDiff * 0.22; // Peso linear de controle de objetivos
+
+  // Bônus de Ponto de Alma (3 Dragões)
+  if(myDrags === 3 && oppDrags < 3) z += 0.45;
+  if(oppDrags === 3 && myDrags < 3) z -= 0.45;
+
+  let p = sigmoid(z);
+
+  // Trava de Alma Fechada (4 Dragões -> ~94% winrate histórico)
+  if(myDrags >= 4) p = Math.max(p, 0.94);
+  if(oppDrags >= 4) p = Math.min(p, 0.06);
+
   const edge = p - precoMercado;
   const kellyFull = Math.max((p - precoMercado) / (1 - precoMercado), 0);
   const stake = Math.min(kellyFull * 0.4, 0.05);
 
-  // Textos
+  // Atualização dos textos
   document.getElementById('statProb').textContent = (p * 100).toFixed(1) + '%';
   document.getElementById('statEdge').textContent = (edge >= 0 ? '+' : '') + (edge * 100).toFixed(1) + ' pts';
   document.getElementById('statEdge').className = 'stat-value ' + (edge >= 0.08 ? 'positive' : 'negative');
   document.getElementById('statStake').textContent = (stake * 100).toFixed(2) + '%';
 
-  // Barras
+  // Barras visuais
   document.getElementById('barModel').style.width = (p * 100).toFixed(1) + '%';
   document.getElementById('txtModelProb').textContent = (p * 100).toFixed(1) + '%';
   document.getElementById('barMarket').style.width = (precoMercado * 100).toFixed(1) + '%';
@@ -334,7 +408,14 @@ function calcular(){
     verdictEl.textContent = 'Sem Entrada — Edge Insuficiente';
   }
 
-  document.getElementById('metaNote').innerHTML = `Tempo: <b>${minuto} min</b> · Lado: <b>${selectedSide === 'blue' ? 'Blue' : 'Red'}</b> · Preço implícito: <b>${(precoMercado * 100).toFixed(1)}%</b>`;
+  // Meta notas
+  let dragNote = '';
+  if(myDrags >= 4) dragNote = ' · <b>👑 Alma Conquistada</b>';
+  else if(myDrags === 3) dragNote = ' · <b>★ Ponto de Alma Ativo</b>';
+  else if(oppDrags >= 4) dragNote = ' · <b>⚠️ Rival com Alma</b>';
+  else if(oppDrags === 3) dragNote = ' · <b>⚠️ Rival em Ponto de Alma</b>';
+
+  document.getElementById('metaNote').innerHTML = `Tempo: <b>${minuto} min</b> · Lado: <b>${selectedSide === 'blue' ? 'Blue' : 'Red'}</b> · Preço implícito: <b>${(precoMercado * 100).toFixed(1)}%</b>${dragNote}`;
 }
 
 calcular();
