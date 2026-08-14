@@ -365,34 +365,33 @@ function calcular(){
   const precoMercado = 1 / odd;
   const isBlue = selectedSide === 'blue' ? 1 : 0;
 
-  // Logit base interpolado
+  // 1. Logit base interpolado por minuto
   let z = getInterpolatedLogit(minuto, golddiff, killdiff, isBlue);
 
-  // Modificadores de Dragões
-  const dragDiff = myDrags - oppDrags;
-  z += dragDiff * 0.22; // Peso linear de controle de objetivos
+  // 2. Peso progressivo e cumulativo por dragão
+  z += (myDrags - oppDrags) * 0.25;
 
-  // Bônus de Ponto de Alma (3 Dragões)
-  if(myDrags === 3 && oppDrags < 3) z += 0.45;
-  if(oppDrags === 3 && myDrags < 3) z -= 0.45;
+  // 3. Impulso de Ponto de Alma (3 Dragões)
+  if (myDrags === 3) z += 0.50;
+  if (oppDrags === 3) z -= 0.50;
+
+  // 4. Impulso decisivo de Alma Fechada (4 Dragões)
+  if (myDrags >= 4) z += 1.60;
+  if (oppDrags >= 4) z -= 1.60;
 
   let p = sigmoid(z);
-
-  // Trava de Alma Fechada (4 Dragões -> ~94% winrate histórico)
-  if(myDrags >= 4) p = Math.max(p, 0.94);
-  if(oppDrags >= 4) p = Math.min(p, 0.06);
 
   const edge = p - precoMercado;
   const kellyFull = Math.max((p - precoMercado) / (1 - precoMercado), 0);
   const stake = Math.min(kellyFull * 0.4, 0.05);
 
-  // Atualização dos textos
+  // Atualização dos textos de resultado
   document.getElementById('statProb').textContent = (p * 100).toFixed(1) + '%';
   document.getElementById('statEdge').textContent = (edge >= 0 ? '+' : '') + (edge * 100).toFixed(1) + ' pts';
   document.getElementById('statEdge').className = 'stat-value ' + (edge >= 0.08 ? 'positive' : 'negative');
   document.getElementById('statStake').textContent = (stake * 100).toFixed(2) + '%';
 
-  // Barras visuais
+  // Barras de progresso comparativas
   document.getElementById('barModel').style.width = (p * 100).toFixed(1) + '%';
   document.getElementById('txtModelProb').textContent = (p * 100).toFixed(1) + '%';
   document.getElementById('barMarket').style.width = (precoMercado * 100).toFixed(1) + '%';
@@ -408,7 +407,7 @@ function calcular(){
     verdictEl.textContent = 'Sem Entrada — Edge Insuficiente';
   }
 
-  // Meta notas
+  // Notas de estado de dragões no rodapé
   let dragNote = '';
   if(myDrags >= 4) dragNote = ' · <b>👑 Alma Conquistada</b>';
   else if(myDrags === 3) dragNote = ' · <b>★ Ponto de Alma Ativo</b>';
